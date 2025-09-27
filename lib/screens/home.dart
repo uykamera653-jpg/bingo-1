@@ -3,6 +3,7 @@ import 'package:bingo/widgets/pub_elon.dart';
 import 'package:flutter/material.dart';
 import 'package:bingo/widgets/app_bar.dart';
 import 'package:bingo/widgets/darkbtn.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bingo/widgets/infoCard.dart';
 import 'package:bingo/widgets/list.dart';
 import 'package:bingo/l10n/app_localizations.dart';
@@ -133,20 +134,22 @@ class HomePage extends StatelessWidget {
                       },
                     ),
                     DarkButton(
-                      text: loc.btn_mine,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ElonPage(listType: "mine_list"),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
+  text: loc.btn_mine,
+  onPressed: () {
+    // joriy foydalanuvchi uid ni olamiz
+    final currentUid = FirebaseAuth.instance.currentUser?.uid;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ElonPage(
+          listType: "mine_list",
+          currentUserUid: currentUid,   // 👈 yangi argument
+        ),
+      ),
+    );
+  },
+),
 
               SizedBox(height: 30),
               ImageSlider(),
